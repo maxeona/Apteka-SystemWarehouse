@@ -3,6 +3,7 @@ package com.example.View;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -19,6 +20,7 @@ public class MainView extends AppLayout {
     public MainView(){
         viewHeader();
         drawerNavigation();
+        createHeader();
     }
 
     private void viewHeader() {
@@ -35,9 +37,9 @@ public class MainView extends AppLayout {
 
 
     private void drawerNavigation() {
+
         RouterLink routerLink1 = new RouterLink("Товар", TableView.class);
         routerLink1.setHighlightCondition(HighlightConditions.sameLocation());
-
 
         RouterLink routerLink3 = new RouterLink("Аналитика", AnalyticMed.class);
         routerLink3.setHighlightCondition(HighlightConditions.sameLocation());
@@ -45,10 +47,23 @@ public class MainView extends AppLayout {
         RouterLink resipe = new RouterLink("Рецепты", RecipeOrderView.class);
         resipe.setHighlightCondition(HighlightConditions.sameLocation());
 
-        RouterLink messages = new RouterLink("Сообщения", MessagesView.class);
-        messages.setHighlightCondition(HighlightConditions.sameLocation());
+        RouterLink warehouse = new RouterLink("Склад", OrderToTheWarehouse.class);
+        warehouse.setHighlightCondition(HighlightConditions.sameLocation());
 
-        addToDrawer(new VerticalLayout(routerLink1, resipe,  routerLink3,  messages));
+        addToDrawer(new VerticalLayout(routerLink1, resipe,  warehouse, routerLink3));
     }
+
+    private void createHeader() {
+
+        Anchor logout = new Anchor("logout", "Выйти");
+
+        HorizontalLayout header = new HorizontalLayout(logout);
+        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.STRETCH);
+        header.setWidth("100%");
+        header.addClassName("header");
+
+        addToNavbar(header);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.View;
 
+import com.example.DAO.BasketDao;
 import com.example.DAO.ComponentImpl;
 import com.example.DAO.DirectoryForRecipeDao;
 import com.example.DAO.RecipeDao;
@@ -18,6 +19,8 @@ public class RecipeOrderView extends VerticalLayout {
     private final RecipeDao recipeDao;
     private  final DirectoryForRecipeDao directory;
     private final ComponentImpl component;
+    private final BasketDao basketDao;
+
 
 
     private Grid<OrderRecipe>orderlist=new Grid<>(OrderRecipe.class);
@@ -27,11 +30,12 @@ public class RecipeOrderView extends VerticalLayout {
 
     private final FormForRecipe testForm;
     private final FormForDetailsAboutRecipe forDetailsAboutRecipe;
-    public RecipeOrderView(RecipeDao recipeDao, ComponentImpl component,  DirectoryForRecipeDao directory) {
+    public RecipeOrderView(RecipeDao recipeDao, ComponentImpl component, BasketDao basketDao, DirectoryForRecipeDao directory) {
         this.recipeDao = recipeDao;
         this.component = component;
+        this.basketDao = basketDao;
+        forDetailsAboutRecipe = new FormForDetailsAboutRecipe(recipeDao, basketDao, component);
 
-        forDetailsAboutRecipe = new FormForDetailsAboutRecipe(recipeDao);
         testForm = new FormForRecipe(recipeDao, directory, component);
         this.directory = directory;
         addClassName("table-view");
@@ -74,7 +78,7 @@ public class RecipeOrderView extends VerticalLayout {
     private void getList() {
         orderlist.setItems(recipeDao.findAll());
         orderlist.setColumns(
-                "id_order","index", "first_name", "last_name", "patronymic", "email", "number", "status");
+                "index", "first_name", "last_name", "patronymic", "email", "number", "data_create", "data_done", "status");
     }
 
     private void viewGrid() {

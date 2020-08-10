@@ -29,6 +29,15 @@ public class OrderRecipe {
     private String number;
     @Column(name="status")
     private String status;
+    @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-mm-yyyy")
+    @Column(name = "data_create")
+    private Date data_create;
+    @Temporal(value = TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-mm-yyyy")
+    @Column(name = "data_done")
+    private Date data_done;
+
 
     public OrderRecipe(){}
 
@@ -92,6 +101,22 @@ public class OrderRecipe {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getData_create() {
+        return data_create;
+    }
+
+    public void setData_create(Date data_create) {
+        this.data_create = data_create;
+    }
+
+    public Date getData_done() {
+        return data_done;
+    }
+
+    public void setData_done(Date data_done) {
+        this.data_done = data_done;
     }
 
     @Override

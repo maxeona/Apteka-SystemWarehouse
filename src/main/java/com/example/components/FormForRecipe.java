@@ -3,7 +3,9 @@ package com.example.components;
 import com.example.DAO.ComponentImpl;
 import com.example.DAO.DirectoryForRecipeDao;
 import com.example.DAO.RecipeDao;
+import com.example.Service.DirectoryForRecipeService;
 import com.example.model.ComponentForRecipes;
+import com.example.model.DirectoryForRecipe;
 import com.example.model.OrderRecipe;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.button.Button;
@@ -14,13 +16,20 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class FormForRecipe extends FormLayout implements KeyNotifier {
-    private OrderRecipe orderRecipe;
+
     private final RecipeDao recipeDao;
     private final DirectoryForRecipeDao directoryDao;
     private final ComponentImpl component;
+    private OrderRecipe orderRecipe;
+    private DirectoryForRecipe directory;
+    private DirectoryForRecipeService directoryService;
 
 
     TextField index = new TextField("Индекс");
@@ -92,17 +101,19 @@ public class FormForRecipe extends FormLayout implements KeyNotifier {
     private void checkNewRecipe() {
         if(directoryDao.findByIndex(index.getValue())!=null){
             checkComponent();
+            settingDataForNewOrder();
             saveOrder();
         }else{
             banner.open();
         }
     }
 
+
     private void checkComponent() {
         List<ComponentForRecipes>listComponent = component.findAllComponent(index.getValue());
         for(ComponentForRecipes componentForRecipes:listComponent){
             if(componentForRecipes.getStatus()==2){
-                orderRecipe.setStatus("ожидает дополнительных компонентов");
+                orderRecipe.setStatus("ожидание");
                 break;
             }else if(componentForRecipes.getStatus()!=2){
                 continue;
@@ -111,6 +122,17 @@ public class FormForRecipe extends FormLayout implements KeyNotifier {
         if(orderRecipe.getStatus()==null){
             orderRecipe.setStatus("изготавливается");
         }
+    }
+
+    private void settingDataForNewOrder() {
+        orderRecipe.setData_create(Calendar.getInstance().getTime());
+        if (orderRecipe.getStatus().equals("изготавливается")){
+            Calendar result = Calendar.getInstance();
+            int finish = directoryDao.findByIndex(orderRecipe.getIndex()).getTerm_izg();
+            result.add(Calendar.DAY_OF_MONTH, finish);
+            orderRecipe.setData_done(result.getTime());
+        }
+
     }
 
     private void saveOrder() {

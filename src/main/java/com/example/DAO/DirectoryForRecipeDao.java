@@ -10,4 +10,5 @@ public interface DirectoryForRecipeDao extends JpaRepository<DirectoryForRecipe,
 
     @Query("select  b from DirectoryForRecipe b where b.index = :index")
     DirectoryForRecipe findByIndex(@Param("index")String index);
+
 }

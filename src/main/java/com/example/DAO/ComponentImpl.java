@@ -14,5 +14,11 @@ public interface ComponentImpl extends JpaRepository<ComponentForRecipes, Long> 
                     "and directory.index= :index")
     List<ComponentForRecipes>findAllComponent(@Param("index") String index);
 
+    @Query(value = "select component from ComponentForRecipes as component, BasketComponent as basket where component.id=basket.components_id")
+    List<ComponentForRecipes>findComponent();
+
+    ComponentForRecipes findByName(String name);
+
+
 
 }

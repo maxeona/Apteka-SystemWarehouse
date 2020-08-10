@@ -1,6 +1,7 @@
 package com.example.components;
 
 import com.example.DAO.MedicineDao;
+import com.example.configuration.CheckInBasket;
 import com.example.model.Medicine;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
@@ -8,8 +9,6 @@ import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,17 +19,16 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.swing.plaf.basic.BasicMenuUI;
 
 @SpringComponent
 @UIScope
 public class FormForMedicine extends VerticalLayout implements KeyNotifier {
+//класс издатель
 
-    private Medicine medicine;
     private final MedicineDao medicineDao;
 
+    private Medicine medicine;
+    private CheckInBasket testClass;
     private TextField name = new TextField("Компонент");
     private NumberField countBuy = new NumberField("Количество");
     private NumberField newPrice = new NumberField("Итого");
@@ -141,7 +139,6 @@ public class FormForMedicine extends VerticalLayout implements KeyNotifier {
             banner.open();
             utilMedicine();});
 
-        save.addClickListener(e->saveMedicine());
 
     }
     private void closeEditorMedicine() {

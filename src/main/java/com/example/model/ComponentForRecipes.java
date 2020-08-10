@@ -1,17 +1,13 @@
 package com.example.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "component")
 public class ComponentForRecipes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     @Column(name = "name")
     private String name;
     @Column(name = "term_godn")
@@ -29,11 +25,11 @@ public class ComponentForRecipes {
     public ComponentForRecipes() {
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,8 +1,9 @@
 package com.example.components;
 
+import com.example.DAO.BasketDao;
+import com.example.DAO.ComponentImpl;
 import com.example.DAO.RecipeDao;
-import com.example.model.ComponentForRecipes;
-import com.example.model.DirectoryForRecipe;
+import com.example.configuration.CheckInBasket;
 import com.example.model.OrderRecipe;
 import com.vaadin.flow.component.KeyNotifier;
 import com.vaadin.flow.component.button.Button;
@@ -12,12 +13,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 
-import java.util.List;
-
 public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier {
-
+//класс издатель
     private final RecipeDao recipeDao;
+    private CheckInBasket testClass;
     private OrderRecipe orderRecipe;
+    private final BasketDao basketDao;
+    private  final ComponentImpl component;
     private TextField index = new TextField("Индекс");
     private TextField first_name = new TextField("Имя");
     private TextField last_name = new TextField("Фамилия");
@@ -34,6 +36,7 @@ public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier
     private HorizontalLayout buttonLayout = new HorizontalLayout(update, delete, buyComponent, close);
     private Binder<OrderRecipe>recipeBinder = new Binder<>(OrderRecipe.class);
 
+
     private ChangeEvent changeEvent;
 
     public interface ChangeEvent {
@@ -44,8 +47,11 @@ public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier
         this.changeEvent = changeEvent;
     }
 
-    public FormForDetailsAboutRecipe(RecipeDao recipeDao){
+    public FormForDetailsAboutRecipe(RecipeDao recipeDao, BasketDao basketDao, ComponentImpl component){
         this.recipeDao = recipeDao;
+        this.basketDao = basketDao;
+        this.component = component;
+        testClass=new CheckInBasket(basketDao, component);
         addClassName("form-order");
         settingButton();
         settingField();
@@ -69,7 +75,7 @@ public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier
         }else{
             this.orderRecipe = neworderRecipe;
         }
-        if(orderRecipe.getStatus().equals("ожидает дополнительных компонентов")){
+        if(orderRecipe.getData_done()==null){
             openVisibleButton();
         }
         recipeBinder.setBean(orderRecipe);
@@ -97,6 +103,8 @@ public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier
             utilOrder();});
         update.addClickListener(e->saveOrder());
         close.addClickListener(e->cancelForm());
+        buyComponent.addClickListener(e->testClass.updateTable(orderRecipe));
+
 
     }
     private void settingField() {
