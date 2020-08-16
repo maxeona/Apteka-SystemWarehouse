@@ -19,16 +19,20 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
 @UIScope
 public class FormForMedicine extends VerticalLayout implements KeyNotifier {
 //класс издатель
 
-    private final MedicineDao medicineDao;
+    @Autowired
+    private  MedicineDao medicineDao;
 
     private Medicine medicine;
-    private CheckInBasket testClass;
+    @Autowired
+    private CheckInBasket checkInBasket;
+
     private TextField name = new TextField("Компонент");
     private NumberField countBuy = new NumberField("Количество");
     private NumberField newPrice = new NumberField("Итого");
@@ -48,9 +52,8 @@ public class FormForMedicine extends VerticalLayout implements KeyNotifier {
         void onChange();
     }
 
-    public FormForMedicine(MedicineDao medicineDao){
+    public FormForMedicine(){
         addClassName("medicine-form");
-        this.medicineDao = medicineDao;
         binder.bindInstanceFields(this);
         add(
                 name,
@@ -138,6 +141,9 @@ public class FormForMedicine extends VerticalLayout implements KeyNotifier {
         util.addClickListener(e -> {
             banner.open();
             utilMedicine();});
+        save.addClickListener(e->{
+
+        });
 
 
     }

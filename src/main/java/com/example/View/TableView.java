@@ -23,37 +23,27 @@ import org.springframework.util.StringUtils;
 //@CssImport("./styles/shared-styles.css")
 public class TableView extends VerticalLayout
 {
-    private final MedicineServiceImpl medicineService;
-    private final FormForMedicine formForMedicine;
-    private final MedicineDao medicineDao;
+    private MedicineServiceImpl medicineService;
+    private  FormForMedicine formForMedicine;
+    private Grid<Medicine>table = new Grid<>(Medicine.class);
+    private TextField filterName = new TextField();
+    private Button newMedicine = new Button("Заказать");
+    private HorizontalLayout layoutButton = new HorizontalLayout(newMedicine);
 
 
-    Grid<Medicine>table = new Grid<>(Medicine.class);
-    TextField filterName = new TextField();
-    Button newMedicine = new Button("Заказать");
-    HorizontalLayout layoutButton = new HorizontalLayout(newMedicine);
-
-
-    public TableView(MedicineServiceImpl medicineService, MedicineDao medicineDao){
-
+    public TableView(MedicineServiceImpl medicineService, FormForMedicine formForMedicine){
         this.medicineService = medicineService;
-        this.medicineDao = medicineDao;
+        this.formForMedicine=formForMedicine;
         addClassName("table-view");
         setSizeFull();
         viewGrid();
         settingFilter();
-
         getList();
-
-        formForMedicine = new FormForMedicine(medicineDao);
-
-
         Div style = new Div( );
         style.addClassName("styleForm");
         style.setSizeFull();
 
         add(filterName, layoutButton,  table, formForMedicine);
-
 
         table.asSingleSelect().addValueChangeListener(e -> {
             formForMedicine.editMedicine(e.getValue());
@@ -70,9 +60,9 @@ public class TableView extends VerticalLayout
 
     private void listMedicine(String value) {
         if(StringUtils.isEmpty(value)){
-            table.setItems(medicineDao.findAll());
+            table.setItems(medicineService.findAll());
         }else{
-            table.setItems(medicineDao.findByName(value));
+            table.setItems(medicineService.findByName(value));
         }
     }
 
@@ -89,7 +79,7 @@ public class TableView extends VerticalLayout
         if(name == null||name.isEmpty()){
             table.setItems(this.medicineService.findAll());
         }else{
-            table.setItems(this.medicineDao.findByName(name));
+            table.setItems(this.medicineService.findByName(name));
         }
     }
 

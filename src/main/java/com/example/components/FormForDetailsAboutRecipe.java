@@ -12,11 +12,14 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 
 public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier {
 //класс издатель
-    private final RecipeDao recipeDao;
-    private CheckInBasket testClass;
+private final RecipeDao recipeDao;
+    private CheckInBasket checkInBasket;
     private OrderRecipe orderRecipe;
     private final BasketDao basketDao;
     private  final ComponentImpl component;
@@ -51,7 +54,7 @@ public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier
         this.recipeDao = recipeDao;
         this.basketDao = basketDao;
         this.component = component;
-        testClass=new CheckInBasket(basketDao, component);
+        checkInBasket=new CheckInBasket(basketDao, component);
         addClassName("form-order");
         settingButton();
         settingField();
@@ -60,6 +63,7 @@ public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier
         setVisible(false);
         buyComponent.setVisible(false);
     }
+
 
 
 
@@ -103,7 +107,7 @@ public class FormForDetailsAboutRecipe extends FormLayout implements KeyNotifier
             utilOrder();});
         update.addClickListener(e->saveOrder());
         close.addClickListener(e->cancelForm());
-        buyComponent.addClickListener(e->testClass.updateTable(orderRecipe));
+        buyComponent.addClickListener(e->checkInBasket.updateTable(orderRecipe));
 
 
     }

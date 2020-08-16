@@ -16,10 +16,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class FormForRecipe extends FormLayout implements KeyNotifier {
@@ -61,6 +61,7 @@ public class FormForRecipe extends FormLayout implements KeyNotifier {
         banner.add(new Label("Данного рецепта нету в справочнике, попробуйте корректно ввести данные."));
         settingButton();
         setVisible(false);
+
 
     }
 

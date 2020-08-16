@@ -7,18 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public class MedicineServiceImpl implements MedicineService {
 
-    private final MedicineDao medicineDao;
-
     @Autowired
-    public MedicineServiceImpl(MedicineDao medicineDao) {
-        this.medicineDao = medicineDao;
-    }
+    private  MedicineDao medicineDao;
+
     @Override
     public List<Medicine> findAll() { return medicineDao.findAll(); }
-
 
     @Override
     public void deleteById(Long id) { medicineDao.deleteById(id); }
@@ -31,5 +27,8 @@ public class MedicineServiceImpl implements MedicineService {
         }
     }
 
-
+    @Override
+    public List<Medicine> findByName(String name) {
+        return  medicineDao.findByName(name);
+    }
 }
